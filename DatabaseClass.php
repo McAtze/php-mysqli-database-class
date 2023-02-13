@@ -7,7 +7,7 @@ class DatabaseClass {
     /**
      * This function is called everytime this class is instantiated
      */
-    public function __construct($dbhost = 'localhost', $dbname = 'databaseName', $username = 'userName', $password = '') {
+    public function __construct($dbhost = 'localhost', $dbname = 'dbName', $username = 'userName', $password = 'password') {
         try {
             $this->connection = new mysqli($dbhost, $username, $password, $dbname);
             if(mysqli_connect_errno()) {

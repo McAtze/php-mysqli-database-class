@@ -8,12 +8,12 @@ Here's a brief explanation of some MySQLi codes that we will be using.
 
 ### Creating a MySQLi instance
 ```php
-$instance = new mysqli(host, username, password, databasename)
+$instance = new mysqli(host, username, password, dbname)
 ```
 * host [Required] - The Data Source Name that contains information required to connect to the database
 * username [Required] - MySQL Username
 * password [Required] - MySQL Password
-* databasename [Required] - MySQL Database name
+* dbname [Required] - MySQL Database name
 
 Returns a MySLQi object or false
 
@@ -236,10 +236,10 @@ Remove will remove a row/s or throws an exception if it get's an error.
 ### Create/Instantiate the Database Class.
 ```php
 $db = new Database(
-    "MySQLHost",
-    "myDatabaseName",
-    "myUserName",
-    "myUserPassword"
+    'host',
+    'dbName',
+    'userName',
+    'password'
 );
 ```
 ### Insert Example
@@ -266,10 +266,10 @@ Take this as an example:
 ```php
 for($x = 1; $x <= 1000; $x++) {
     $db = new Database(
-        "MySQLHost",
-        "myDatabaseName",
-        "myUserName",
-        "myUserPassword"
+        'host',
+        'dbName',
+        'userName',
+        'password'
     );
     $data = $db->Select("Select * from TableName where id = ?",["i",$x]);
     // do something with $data
@@ -280,10 +280,10 @@ The above code will create 1000 connections and this could lead to your server t
 A better way to do this is to create the DatabaseClass object before the looping:
 ```php
 $db = new Database(
-    "MySQLHost",
-    "myDatabaseName",
-    "myUserName",
-    "myUserPassword"
+    'host',
+    'dbName',
+    'userName',
+    'password'
 );
 for($x = 1; $x <= 1000; $x++) {
     $data = $db->Select("Select * from TableName where id = ?",["i",$x]);
