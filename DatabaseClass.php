@@ -2,10 +2,11 @@
 
 class DatabaseClass {
 
-    private $connection = null;
+    private ?mysqli $connection = null;
 
     /**
      * This function is called everytime this class is instantiated
+     * @throws Exception
      */
     public function __construct($dbhost = 'localhost', $dbname = 'dbName', $username = 'userName', $password = 'password') {
         try {
@@ -21,8 +22,10 @@ class DatabaseClass {
 
     /**
      * Insert a row/s in a database table
+     * @throws Exception
      */
-    public function insert($query = '', $params = []) {
+    public function insert($query = '', $params = []): int|string
+    {
 	    try {
 		    $stmt = $this->executeStatement($query, $params);
             $stmt->close();
@@ -38,8 +41,10 @@ class DatabaseClass {
 
     /**
      * Select a row/s in a database table
+     * @throws Exception
      */
-    public function select($query = '', $params = []) {
+    public function select($query = '', $params = []): array
+    {
         try {
             $stmt = $this->executeStatement($query, $params);
             $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);				
@@ -56,8 +61,10 @@ class DatabaseClass {
 
     /**
      * Update a row/s in a database table
+     * @throws Exception
      */
-    public function update($query = '', $params = []) {
+    public function update($query = '', $params = []): bool
+    {
         try {
             $this->executeStatement($query, $params)->close();		
         }
@@ -66,12 +73,14 @@ class DatabaseClass {
         }
 	
         return false;
-    }		
+    }
 
     /**
      * Remove a row/s in a database table
+     * @throws Exception
      */
-    public function remove($query = '', $params = []) {
+    public function remove($query = '', $params = []): bool
+    {
         try {
             $this->executeStatement($query, $params)->close();
         }
@@ -80,16 +89,18 @@ class DatabaseClass {
         }
 	
         return false;
-    }		
+    }
 
     /**
      * Execute statement
+     * @throws Exception
      */
-    private function executeStatement($query = '', $params = []) {
+    private function executeStatement($query = '', $params = []): mysqli_stmt
+    {
         try {
             $stmt = $this->connection->prepare($query);
             if($stmt === false) {
-                throw New Exception('Unable to do prepared statement: .' $query);
+                throw New Exception('Unable to do prepared statement: '. $query);
             }		
             if($params) {
                 call_user_func_array(array($stmt, 'bind_param'), $params);				
