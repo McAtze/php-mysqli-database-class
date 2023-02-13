@@ -259,3 +259,38 @@ $db->Update("Update TableName set `column1` = ? where id = ?", ['si', 'a new col
 ```php
 $db->Remove("Delete from TableName where id = ?", ['i', 1]);
 ```
+## Tips
+Minimize connections to your server.
+
+Take this as an example:
+```php
+for($x = 1; $x <= 1000; $x++) {
+    $db = new Database(
+        "MySQLHost",
+        "myDatabaseName",
+        "myUserName",
+        "myUserPassword"
+    );
+    $data = $db->Select("Select * from TableName where id = ?",["i",$x]);
+    // do something with $data
+}
+```
+The above code will create 1000 connections and this could lead to your server to slowing down.
+
+A better way to do this is to create the DatabaseClass object before the looping:
+```php
+$db = new Database(
+    "MySQLHost",
+    "myDatabaseName",
+    "myUserName",
+    "myUserPassword"
+);
+for($x = 1; $x <= 1000; $x++) {
+    $data = $db->Select("Select * from TableName where id = ?",["i",$x]);
+    // do something with $data
+}
+```
+The above code will create 1 connection and will use it inside the loop.
+
+## Credits
+Original by https://devjunky.com/Creating-a-MySqli-Database-Class-in-PHP/
